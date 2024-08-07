@@ -1,32 +1,28 @@
+const e = require("express");
 const { newConnection } = require("../dataBase/dataBase");
 
 async function newTask(req, res) {
-    try {
-        const connection = await newConnection()
 
-        const { title, description } = req.body
+    const connection = await newConnection()
 
-        const output = await connection.query("INSERT INTO tasks (title, description) values (?,?)", [title, description])
+    const { title, description } = req.body;
 
-        if (title === 0 && description === 0) {
-            return "Invalid entries, try again.";
-        } 
-        connection.end((err) => {
-            if (err) {
-                console.error('Error closing connection:', err);
-            } else {
-                console.log('Connection closed successfully');
-            }
-        });
+    if (!title || !description) {
+        return res.status(400).send("Title and description are required");
+    } else if (title.length || description.length <3) return res.status(400).send("Values should have more than 3 characters.")
+        else if (title.length >255) res.status(400).send("Title length cannot surpass 255 characters.")
 
 
-        res.send(output)
-
-        connection.end()
+    else try {
+        {await connection.query("INSERT INTO tasks (title, description) VALUES (?, ?)", [title, description])};
+        res.status(201).send("Task created successfully");
     } catch (error) {
-        console.log("An error has occurred, please check your entries and try again");
+        console.error(error);
+        res.status(400).send("Error creating task");
     }
 }
+
+
 
 module.exports = {
     newTask
