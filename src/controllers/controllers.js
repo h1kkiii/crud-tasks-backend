@@ -1,3 +1,4 @@
+const { error } = require("console");
 const { newConnection } = require("../dataBase/dataBase");
 
 //Añadir tarea
@@ -11,12 +12,11 @@ async function newTask(req, res) {
         return res.status(400).send("Title and description are required");
     } else if (title.length <= 3 || description.length <= 3) return res.status(400).send("Values should have more than 3 characters.")
     else if (title.length > 255) res.status(400).send("Title length cannot surpass 255 characters.")
-    else if (typeof title != String || typeof description != String) res.status(400).send("Title and description must be letters.")
     else try {
         { await connection.query("INSERT INTO tasks (title, description) VALUES (?, ?)", [title, description]) };
         res.status(201).send("Task created successfully");
     } catch (error) {
-        console.error(error);
+        console.error
         res.status(400).send("Error creating task");
     }
 
@@ -33,7 +33,8 @@ async function getTasks(req, res) {
         res.json(output[0]);
     }
     catch (err) {
-        return res.status(500).send("Error getting tasks.")
+        console.error
+        res.status(500).send("Error getting tasks.")
     }
 
     connection.end();
@@ -49,14 +50,60 @@ async function getTasksbyId(req, res) {
     try {
         const output = await connection.query("SELECT * FROM tasks WHERE id = ?", id)
         res.json(output[0])
-    } catch (error) {
+    } catch (err) {
+        console.error
         res.status(400).send("An error has occurred, check your entries and try again.")
     }
 
     connection.end()
 }
+
+//Actualizar una tarea mediante id
+async function updById(req, res) {
+    
+    const connection = await newConnection()
+
+    const id = req.params.id
+
+    const {title, description} = req.body
+
+    if (!title || !description) {
+        return res.status(400).send("Title and description are required to be modified.");
+    } else if (title.length <= 3 || description.length <= 3) return res.status(400).send("Values should have more than 3 characters.")
+    else if (title.length > 255) res.status(400).send("Title length cannot surpass 255 characters.")
+    else try {
+        { await connection.query("UPDATE tasks SET title = ?, description = ? WHERE id = ?", [title, description, id])};
+        res.status(200).send("Selected task has been updated successfully.");
+    } catch (error) {
+        console.error;
+        res.status(400).send("Error updating selected task.");
+    }
+
+    connection.end()
+}
+
+//Borrar una tarea por id
+async function deleteById(req, res) {
+    
+    const connection = await newConnection()
+
+    const id = req.params.id
+
+    try {
+        const output = await connection.query("DELETE FROM tasks WHERE id = ?", id)
+        res.status(200).send(output)
+    } catch (error) {
+        console.error
+        res.status(400).send("An error has occurred, please check your entries and try again.")
+    }
+
+    connection.end();
+}
+
 module.exports = {
     newTask,
     getTasks,
-    getTasksbyId
+    getTasksbyId,
+    updById,
+    deleteById
 }
