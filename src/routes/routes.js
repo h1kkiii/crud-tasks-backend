@@ -1,7 +1,14 @@
 const {Router} = require("express");
 const router = Router();
-const {newTask} = require("../controllers/controllers")
+const {newTask, getTasks, getTasksbyId} = require("../controllers/controllers")
 
-router.post("/tasks", newTask)
+try {
+    router.post("/tasks", newTask)
+    router.get("/tasks", getTasks)
+    router.get("/task/:id", getTasksbyId)
+} catch (error) {
+    return res.status(404).send("Page not found.")
+}
+
 
 module.exports = router
