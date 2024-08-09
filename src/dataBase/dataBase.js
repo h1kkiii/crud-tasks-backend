@@ -13,6 +13,4 @@ const newConnection = async ()=>{
     return connection
 }
 
-module.exports = {
-    newConnection
-}
+export {newConnection}

@@ -1,15 +1,27 @@
-import {Router} from"express";
-const router = Router();
-import {newTask, getTasks, getTasksbyId, updById, deleteById} from "../controllers/controllers.js";
+import { Router } from "express";
 
-try {
-    router.post("/tasks", newTask)
-    router.get("/tasks", getTasks)
-    router.get("/task/:id", getTasksbyId)
-    router.put("/task/:id", updById)
-    router.delete("/task/:id", deleteById)
-} catch (error) {
-    return res.status(404).send("Page not found.")
-}
+import {
+  newTask,
+  getTasks,
+  getTasksbyId,
+  updById,
+  deleteById,
+} from "../controllers/controllers.js";
 
-module.exports = router
+import {
+    createTaskValidation,
+  tasksvUpdates,
+} from "../validations/validations.js";
+import {
+  applyValidations
+} from "../middleware/midd.js"
+
+const taskRouter = Router();
+
+taskRouter.post("/tasks", createTaskValidation, applyValidations, newTask);
+taskRouter.get("/tasks", getTasks);
+taskRouter.get("/task/:id", getTasksbyId);
+taskRouter.put("/task/:id", updById, tasksvUpdates);
+taskRouter.delete("/task/:id", deleteById);
+
+export { taskRouter };
