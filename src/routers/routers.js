@@ -1,6 +1,6 @@
-const {Router} = require("express");
+import {Router} from"express";
 const router = Router();
-const {newTask, getTasks, getTasksbyId, updById, deleteById} = require("../controllers/controllers")
+import {newTask, getTasks, getTasksbyId, updById, deleteById} from "../controllers/controllers.js";
 
 try {
     router.post("/tasks", newTask)

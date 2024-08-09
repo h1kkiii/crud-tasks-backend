@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
 const dataBase = express();
 
-const mysql2 = require("mysql2/promise");
+import mysql2 from "mysql2/promise";
 const newConnection = async ()=>{
 
     const connection = await mysql2.createConnection({

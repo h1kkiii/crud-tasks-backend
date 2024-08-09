@@ -1,5 +1,4 @@
-const { error } = require("console");
-const { newConnection } = require("../dataBase/dataBase");
+import { newConnection } from "../dataBase/dataBase.js";
 
 //Añadir tarea
 async function newTask(req, res) {
