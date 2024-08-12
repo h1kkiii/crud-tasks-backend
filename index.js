@@ -6,6 +6,6 @@ app.use(express.json());
 app.use(express.text());
 app.use("/tasks", taskRouter);
 
-app.listen(1357, ()=>{
-    console.log("Server running on port 1357");
-})
+app.listen(1357, () => {
+  console.log("Server running on port 1357");
+});

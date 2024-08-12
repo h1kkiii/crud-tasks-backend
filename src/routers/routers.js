@@ -9,12 +9,10 @@ import {
 } from "../controllers/controllers.js";
 
 import {
-    createTaskValidation,
+  createTaskValidation,
   tasksvUpdates,
 } from "../validations/validations.js";
-import {
-  applyValidations
-} from "../middleware/midd.js"
+import { applyValidations } from "../middleware/midd.js";
 
 const taskRouter = Router();
 
