@@ -23,8 +23,12 @@ async function getTasks(req, res) {
   const connection = await newConnection();
 
   try {
-    const output = await connection.query("SELECT * FROM tasks");
-    res.json(output[0]);
+    const [output] = await connection.query("SELECT * FROM tasks");
+    if(output.length === 0) {
+      res.json({msg:"No tasks were found"})
+    } else  {
+      res.json(output[0]);
+    }
   } catch (err) {
     console.error;
     res.status(500).send("Error getting tasks.");
@@ -73,7 +77,7 @@ async function updById(req, res) {
     {
       await connection.query(
         "UPDATE tasks SET title = ?, description = ?, isComplete = ? WHERE id = ?",
-        [title, description, id, isComplete]
+        [title, description, isComplete, id]
       );
     }
     res.status(200).send("Selected task has been updated successfully.");

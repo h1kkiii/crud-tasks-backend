@@ -16,10 +16,10 @@ import { applyValidations } from "../middleware/midd.js";
 
 const taskRouter = Router();
 
-taskRouter.post("/tasks", createTaskValidation, applyValidations, newTask);
-taskRouter.get("/tasks", getTasks);
-taskRouter.get("/task/:id", getTasksbyId);
-taskRouter.put("/task/:id", updById, tasksvUpdates);
-taskRouter.delete("/task/:id", deleteById);
+taskRouter.post("/", createTaskValidation, applyValidations, newTask);
+taskRouter.get("/", getTasks);
+taskRouter.get("/:id", getTasksbyId);
+taskRouter.put("/:id", updById, tasksvUpdates);
+taskRouter.delete("/:id", deleteById);
 
 export { taskRouter };
