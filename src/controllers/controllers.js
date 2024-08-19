@@ -25,7 +25,7 @@ async function getTasks(req, res) {
   try {
     const [output] = await connection.query("SELECT * FROM tasks");
     if(output.length === 0) {
-      res.json({msg:"No tasks were found"})
+      res.json({message:"No tasks were found"})
     } else  {
       res.json(output[0]);
     }

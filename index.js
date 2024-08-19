@@ -1,6 +1,7 @@
 import express from "express";
 const app = express();
 import { taskRouter } from "./src/routers/routers.js";
+import { newConnection } from "./src/dataBase/dataBase.js";
 
 app.use(express.json());
 app.use(express.text());
